@@ -1,4 +1,6 @@
-int size = 50;
+int pSize = 50;
+int size = pSize;
+int sOffset = 20;
 int x = 50;
 int xOffset = 2;
 Boolean xOut = true;
@@ -7,9 +9,14 @@ int r = 0;
 int rOffset = 4;
 
 int re = 255, gr = 255, bl = 255;
-color colour = color(re, gr, bl);
+color colour;
 int cOffset = 5;
-int cLimit = 10;
+int cLimitL = 10;
+int cLimitH = 255;
+
+Boolean cFade = true;
+
+Boolean black = true;
 
 void setup()
 {
@@ -18,61 +25,136 @@ void setup()
 }
 
 void draw()
-{
+{  
+  colour = color(re, gr, bl);
   fill(colour);
   
-  re -= cOffset;
-  if(re >= cLimit)
+  if(cFade)
   {
-    bl -= cOffset;
-    if(bl >= 10 && bl >= cLimit)
+    if(re > cLimitL)
+      re -= cOffset;
+    else
     {
-      gr -= cOffset;
-      if(re >= 10 && gr >= 10 && bl >= cLimit)
+      if(re <= cLimitL && gr <= cLimitL)
       {
-        re = gr = bl = 255;
+        if(re <= cLimitL && gr <= cLimitL && bl <= cLimitL)
+          cFade = false;
+        else
+          bl -= cOffset;
       }
+      else
+        gr -= cOffset;
+    }
+  }
+  else
+  {
+    if(re < cLimitH)
+      re += cOffset;
+    else
+    {
+      if(re >= cLimitH && gr >= cLimitH)
+      {
+        if(re >= cLimitH && gr >= cLimitH && bl >= cLimitH)
+        {
+          cFade = true;
+        }
+        else
+          bl += cOffset;
+      }
+      else
+        gr += cOffset;
     }
   }
   
   pushMatrix();
   translate(width / 2, height / 2);
   
-  background(0);
+  if(black)
+    background(0);
+  else
+    background(255);
   
   pushMatrix();
   
   rotate(radians(r / 7));
-  fill(255, 12.5);
-  ellipse(x, 0, size, size);
+  fill(colour, 25);
+  while(size >= cLimitL)
+  {
+    ellipse(x, 0, size, size);
+    
+    size -= sOffset;
+  }
+  size = pSize;
   
   rotate(radians(r / 7));
-  fill(255, 25);
-  ellipse(x, 0, size, size);
+  fill(colour, 50);
+  while(size >= cLimitL)
+  {
+    ellipse(x, 0, size, size);
+    
+    size -= sOffset;
+  }
+  size = pSize;
   
   rotate(radians(r / 7));
-  fill(255, 37.5);
-  ellipse(x, 0, size, size);
+  fill(colour, 75);
+  while(size >= cLimitL)
+  {
+    ellipse(x, 0, size, size);
+    
+    size -= sOffset;
+  }
+  size = pSize;
   
   rotate(radians(r / 7));
-  fill(255, 50);
-  ellipse(x, 0, size, size);
+  fill(colour, 100);
+  while(size >= cLimitL)
+  {
+    ellipse(x, 0, size, size);
+    
+    size -= sOffset;
+  }
+  size = pSize;
   
   rotate(radians(r / 7));
-  fill(255, 62.5);
-  ellipse(x, 0, size, size);
+  fill(colour, 125);
+  while(size >= cLimitL)
+  {
+    ellipse(x, 0, size, size);
+    
+    size -= sOffset;
+  }
+  size = pSize;
   
   rotate(radians(r / 7));
-  fill(255, 75);
-  ellipse(x, 0, size, size);
+  fill(colour, 150);
+  while(size >= cLimitL)
+  {
+    ellipse(x, 0, size, size);
+    
+    size -= sOffset;
+  }
+  size = pSize;
   
   rotate(radians(r / 7));
-  fill(255, 87.5);
-  ellipse(x, 0, size, size);
+  fill(colour, 175);
+  while(size >= cLimitL)
+  {
+    ellipse(x, 0, size, size);
+    
+    size -= sOffset;
+  }
+  size = pSize;
   
   rotate(radians(r / 7));
-  fill(255);
-  ellipse(x, 0, size, size);
+  fill(colour, 200);
+  while(size >= cLimitL)
+  {
+    ellipse(x, 0, size, size);
+    
+    size -= sOffset;
+  }
+  size = pSize;
   
   popMatrix();
   
@@ -88,7 +170,10 @@ void draw()
   {
     x -= xOffset;
     if(x <= 0)
+    {
       xOut = true;
+      black = !black;
+    }
   }
   
   popMatrix();
